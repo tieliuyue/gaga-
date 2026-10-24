@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幻星填表助手 - 投递管理</title>
+  <link rel="stylesheet" href="applications.css">
+</head>
+<body>
+  <!-- 顶部主导航 -->
+  <header class="top-navbar">
+    <div class="top-navbar-inner">
+      <div class="brand-wrapper">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        </div>
+        <span class="brand-title">幻星填表助手</span>
+        <span class="brand-subtitle">投递管理</span>
+      </div>
+
+      <!-- 核心页面导航切换 -->
+      <nav class="nav-pages-menu">
+        <a href="options.html" class="nav-page-link">📝 简历管理</a>
+        <a href="applications.html" class="nav-page-link active">📊 投递管理</a>
+        <a href="options.html#mod-apiSettings" class="nav-page-link">⚙️ 大模型配置</a>
+      </nav>
+
+      <div class="nav-actions"></div>
+    </div>
+  </header>
+
+  <!-- 主体工作区 -->
+  <main class="main-container">
+    <!-- 标题与自动加入开关 -->
+    <div class="aw-header-row">
+      <div class="aw-title-group">
+        <h1 class="aw-page-title">投递管理</h1>
+        <label class="aw-toggle-label" title="开启后，在网申网页一键填表成功后会自动记录至此">
+          <input type="checkbox" id="toggle-auto-add" class="aw-toggle-input">
+          <span class="aw-toggle-slider"></span>
+          <span class="aw-toggle-text">填表后自动加入投递记录</span>
+        </label>
+      </div>
+
+      <div class="aw-header-actions">
+        <button type="button" class="btn-primary-action" id="btn-add-top">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          添加记录
+        </button>
+      </div>
+    </div>
+
+    <!-- 5大统计指标卡片 (仿截图2) -->
+    <div class="aw-stats-grid">
+      <div class="aw-stat-card" data-stat-type="total">
+        <div class="aw-stat-info">
+          <label class="aw-stat-label">投递总数</label>
+          <strong class="aw-stat-num" id="stat-total">0</strong>
+        </div>
+        <div class="aw-stat-icon-wrapper icon-blue">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="12" x2="15" y2="12"></line><line x1="9" y1="16" x2="13" y2="16"></line></svg>
+        </div>
+      </div>
+
+      <div class="aw-stat-card" data-stat-type="today">
+        <div class="aw-stat-info">
+          <label class="aw-stat-label">今日投递</label>
+          <strong class="aw-stat-num" id="stat-today">0</strong>
+        </div>
+        <div class="aw-stat-icon-wrapper icon-indigo">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+      </div>
+
+      <div class="aw-stat-card" data-stat-type="today-todo">
+        <div class="aw-stat-info">
+          <label class="aw-stat-label">今日待办</label>
+          <strong class="aw-stat-num" id="stat-today-todo">0</strong>
+        </div>
+        <div class="aw-stat-icon-wrapper icon-pink">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="aw-stat-card" data-stat-type="uncompleted-todo">
+        <div class="aw-stat-info">
+          <label class="aw-stat-label">未完成待办</label>
+          <strong class="aw-stat-num" id="stat-pending-todo">0</strong>
+        </div>
+        <div class="aw-stat-icon-wrapper icon-orange">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </div>
+      </div>
+
+      <div class="aw-stat-card" data-stat-type="offer">
+        <div class="aw-stat-info">
+          <label class="aw-stat-label">已获Offer</label>
+          <strong class="aw-stat-num" id="stat-offer">0</strong>
+        </div>
+        <div class="aw-stat-icon-wrapper icon-green">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 视图切换与状态分类筛选 (仿截图2) -->
+    <div class="aw-view-row">
+      <div class="aw-view-switch" id="view-switcher">
+        <button type="button" class="view-btn active" data-view="table">表格</button>
+        <button type="button" class="view-btn" data-view="kanban">看板</button>
+        <button type="button" class="view-btn" data-view="calendar">日历</button>
+      </div>
+
+      <div class="aw-search-box">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="搜索公司、职位、备注..." class="search-input">
+      </div>
+    </div>
+
+    <!-- 状态筛选胶囊条 (仿截图2) -->
+    <div class="aw-legends-row" id="legends-filter-bar">
+      <button type="button" class="aw-legend-chip active" data-status="all">全部 <small id="count-all">0</small></button>
+      <button type="button" class="aw-legend-chip" data-status="has_todo">有待办 <small id="count-has_todo">0</small></button>
+      <button type="button" class="aw-legend-chip chip-gray" data-status="未投递">未投递 <small id="count-未投递">0</small></button>
+      <button type="button" class="aw-legend-chip chip-blue" data-status="已投递">已投递 <small id="count-已投递">0</small></button>
+      <button type="button" class="aw-legend-chip chip-yellow" data-status="已一面">已一面 <small id="count-已一面">0</small></button>
+      <button type="button" class="aw-legend-chip chip-amber" data-status="已二面">已二面 <small id="count-已二面">0</small></button>
+      <button type="button" class="aw-legend-chip chip-purple" data-status="已终面">已终面 <small id="count-已终面">0</small></button>
+      <button type="button" class="aw-legend-chip chip-green" data-status="已获Offer">已获Offer <small id="count-已获Offer">0</small></button>
+      <button type="button" class="aw-legend-chip chip-red" data-status="未通过">未通过 <small id="count-未通过">0</small></button>
+      <button type="button" class="aw-legend-chip chip-zinc" data-status="已放弃">已放弃 <small id="count-已放弃">0</small></button>
+    </div>
+
+    <!-- 表格工具栏与容器 -->
+    <div class="aw-surface-card">
+      <div class="aw-toolbar">
+        <button type="button" class="tb-btn" id="btn-add-record">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          添加记录
+        </button>
+        <button type="button" class="tb-btn tb-btn-advance" id="btn-advance-stage" style="display: none; background: #c96442; color: #fff; border-color: #c96442; font-weight: 500;">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-5-5 5 5-5 5"></path></svg>
+          <span id="btn-advance-label">从前序记录推进</span>
+        </button>
+        <button type="button" class="tb-btn" id="btn-delete-selected" disabled>
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          删除选中
+        </button>
+        <span class="tb-divider"></span>
+        <button type="button" class="tb-btn" id="btn-export-data">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+          导出 JSON
+        </button>
+        <button type="button" class="tb-btn" id="btn-import-data">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          导入数据
+        </button>
+        <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+        <div class="tb-right-tools">
+          <button type="button" class="tb-btn-text" id="btn-clear-filter">清除筛选</button>
+        </div>
+      </div>
+
+      <!-- 表格视图 -->
+      <div class="aw-table-wrapper" id="table-view-container">
+        <table class="aw-data-table" id="applications-table">
+          <thead>
+            <tr>
+              <th style="width: 40px; text-align: center;"><input type="checkbox" id="select-all-checkbox"></th>
+              <th style="width: 120px;">投递日期</th>
+              <th style="width: 160px;">公司</th>
+              <th style="width: 160px;">岗位</th>
+              <th style="width: 120px;">当前状态</th>
+              <th style="width: 150px;">待办事项</th>
+              <th style="width: 150px;">备注 / 薪资</th>
+              <th style="min-width: 140px;">投递链接</th>
+              <th style="width: 100px; text-align: center;">操作</th>
+            </tr>
+          </thead>
+          <tbody id="applications-table-body">
+            <!-- 动态渲染数据行 -->
+          </tbody>
+        </table>
+
+        <!-- 空数据占位 (仿截图3) -->
+        <div class="aw-empty-state" id="empty-state-card" style="display: none;">
+          <div class="aw-empty-icon-circle">
+            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#c47357" stroke-width="1.8"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><line x1="9" y1="12" x2="15" y2="12"></line><line x1="9" y1="16" x2="13" y2="16"></line></svg>
+          </div>
+          <h3 class="aw-empty-title" id="empty-state-title">开始记录你的求职进展</h3>
+          <p class="aw-empty-desc" id="empty-state-desc">集中管理投递、面试与待办，让每一次机会都有迹可循。</p>
+          <div class="aw-empty-actions">
+            <button type="button" class="btn-empty-primary" id="btn-empty-advance" style="display: none; background: #c96442;">🚀 从已有记录选择推进</button>
+            <button type="button" class="btn-empty-primary" id="btn-empty-add">+ 添加记录</button>
+            <button type="button" class="btn-empty-secondary" id="btn-empty-import">📥 文件导入</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 看板视图 (可选切换) -->
+      <div class="aw-kanban-wrapper" id="kanban-view-container" style="display: none;">
+        <div class="kanban-columns-grid" id="kanban-columns">
+          <!-- 动态按状态分组渲染 -->
+        </div>
+      </div>
+
+      <!-- 日历视图 (可选切换) -->
+      <div class="aw-calendar-wrapper" id="calendar-view-container" style="display: none;">
+        <div class="calendar-card" id="calendar-view-inner">
+          <div class="calendar-header-bar">
+            <button type="button" class="btn-calendar-nav" id="btn-cal-prev">◀ 上个月</button>
+            <span class="calendar-month-title" id="calendar-month-label">2026年10月</span>
+            <button type="button" class="btn-calendar-nav" id="btn-cal-next">下个月 ▶</button>
+          </div>
+          <div class="calendar-grid" id="calendar-days-grid">
+            <!-- 动态渲染日历天数与日程项 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 添加/编辑记录模态弹窗 -->
+  <div class="modal-backdrop" id="record-modal-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-form-title">添加投递记录</h3>
+        <button type="button" class="modal-close-btn" id="btn-close-modal">✕</button>
+      </div>
+
+      <form id="record-form" class="modal-form">
+        <input type="hidden" id="form-record-id">
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">公司名称<span class="required">*</span></label>
+            <input type="text" id="form-company" class="form-input" placeholder="例如：易盛信息、腾讯、字节跳动" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">投递岗位<span class="required">*</span></label>
+            <input type="text" id="form-position" class="form-input" placeholder="例如：Agent开发工程师、前端开发" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">投递日期</label>
+            <input type="date" id="form-date" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">当前状态</label>
+            <select id="form-status" class="form-select">
+              <option value="未投递">未投递</option>
+              <option value="已投递" selected>已投递</option>
+              <option value="已一面">已一面</option>
+              <option value="已二面">已二面</option>
+              <option value="已终面">已终面</option>
+              <option value="已获Offer">已获Offer</option>
+              <option value="未通过">未通过</option>
+              <option value="已放弃">已放弃</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">待办事项（如笔试时间、面试提醒）</label>
+          <input type="text" id="form-todo" class="form-input" placeholder="例如：10月25日 14:00 线上技术一面">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">投递链接</label>
+          <input type="url" id="form-url" class="form-input" placeholder="https://esunny.zhiye.com/...">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">关联简历</label>
+            <select id="form-resume-name" class="form-select">
+              <option value="简历一">简历一</option>
+              <option value="简历二">简历二</option>
+              <option value="简历三">简历三</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">备注 / 薪资要求</label>
+            <input type="text" id="form-notes" class="form-input" placeholder="例如：15k-20k·深圳 / 猎头推荐">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" id="btn-cancel-modal">取消</button>
+          <button type="submit" class="btn-save">保存记录</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 推进状态模态弹窗 (从前序记录选择推进) -->
+  <div class="modal-backdrop" id="advance-modal" style="display: none;">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="advance-modal-title">🚀 推进流程 ➔ 【已一面】</h3>
+        <button type="button" class="modal-close-btn" id="advance-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.5;">
+          从前序阶段的投递记录中勾选，直接将状态推进至目标阶段：
+        </p>
+
+        <div style="margin-bottom: 12px;">
+          <input type="text" id="advance-search-input" class="form-input" placeholder="🔍 快速搜索公司或岗位..." style="width: 100%;">
+        </div>
+
+        <div id="advance-candidates-list" class="advance-list-box">
+          <!-- 动态渲染候选记录列表 -->
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label class="form-label" style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: block;">附带添加面试时间 / 待办事项（选填）</label>
+          <input type="text" id="advance-todo-input" class="form-input" placeholder="如：10月25日 14:00 腾讯会议一面" style="width: 100%;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" id="btn-advance-cancel">取消</button>
+        <button type="button" class="btn-save" id="btn-advance-submit">确认推进状态</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 提示容器 -->
+  <div id="toast" class="toast"></div>
+
+  <script src="applications.js"></script>
+</body>
+</html>

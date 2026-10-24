@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>幻星填表助手</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="popup-header">
+    <div class="header-brand">
+      <img src="icon/32.png" alt="logo" class="header-logo">
+      <div class="header-title-wrap">
+        <h1 class="header-title">幻星填表助手</h1>
+        <span class="header-tag">网申助手</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="btn-open-applications" class="icon-btn" title="投递管理中心">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>
+        <span>投递管理</span>
+      </button>
+      <button id="btn-open-settings" class="icon-btn" title="大模型与简历配置">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Resume Cards (3 Resumes) -->
+  <section class="section-resumes">
+    <div class="resume-list" id="resume-list">
+      <!-- Injected by popup.js: 简历一, 简历二, 简历三 -->
+    </div>
+    <div class="manage-resume-row">
+      <a href="#" id="link-manage-resumes" class="link-manage">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+        <span>管理与上传简历 (PDF)</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Main Action Button -->
+  <section class="section-actions">
+    <button id="btn-fill-form" class="btn-primary-fill">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+      <span id="btn-fill-text">一键填写</span>
+    </button>
+  </section>
+
+  <!-- Page Detection Status -->
+  <section class="section-status">
+    <div id="page-status-box" class="page-status-box">
+      <div class="status-indicator-icon" id="status-icon">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+      <div class="status-text-wrap">
+        <div id="status-main-text" class="status-main">正在检测当前网页表单...</div>
+        <div id="status-sub-text" class="status-sub"></div>
+      </div>
+      <div class="status-actions">
+        <button id="btn-toggle-scan" class="btn-toggle-scan is-enabled" title="点击切换检测状态">
+          <span class="toggle-dot"></span>
+          <span id="btn-toggle-scan-text">检测开启</span>
+        </button>
+        <button id="btn-refresh-scan" class="btn-refresh-scan" title="重新检测页面">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Realtime Logs & Interrupt -->
+  <section id="section-logs" class="section-logs" style="display:none;">
+    <div class="logs-header">
+      <div class="logs-header-left">
+        <div class="spinner-sm"></div>
+        <span id="logs-step-title">正在执行网申填表...</span>
+      </div>
+      <button id="btn-abort-fill" class="btn-abort" title="中断填写">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>中断</span>
+      </button>
+    </div>
+    <div id="logs-container" class="logs-container"></div>
+  </section>
+
+  <!-- Fill Complete Success Card -->
+  <section id="section-complete" class="section-complete" style="display:none;">
+    <div class="complete-card">
+      <div class="complete-badge">✓</div>
+      <div class="complete-title" id="complete-title">表单填写已完成！</div>
+      <div class="complete-desc" id="complete-desc">已成功自动填充页面对应字段</div>
+      <div class="complete-actions">
+        <button id="btn-add-application" class="btn-complete-action btn-add-app">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          <span id="btn-add-app-text">加入投递管理</span>
+        </button>
+        <button id="btn-goto-applications" class="btn-complete-action btn-view-app">
+          <span>查看投递看板 →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="popup-footer">
+    <div class="footer-user">
+      <div class="user-avatar" id="footer-avatar">🤖</div>
+      <div class="user-info">
+        <span class="user-name" id="footer-resume-name">吴昊的简历</span>
+        <span class="user-status-dot"></span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="#" id="link-api-settings" class="footer-link">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <span>API Key 配置</span>
+      </a>
+    </div>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

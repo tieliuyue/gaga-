@@ -1,0 +1,76 @@
+{
+   "action": {
+      "default_popup": "popup.html",
+      "default_title": "幻星填表助手"
+   },
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [
+      {
+         "js": [
+            "content-scripts/content.js"
+         ],
+         "matches": [
+            "*://*/*"
+         ],
+         "run_at": "document_idle"
+      },
+      {
+         "js": [
+            "content-scripts/phoenix-page-bridge.js"
+         ],
+         "matches": [
+            "*://*/*"
+         ],
+         "run_at": "document_idle",
+         "world": "MAIN"
+      }
+   ],
+   "description": "一键将简历信息自动填入网申表单，支持 React/Vue 等主流框架",
+   "host_permissions": [
+      "*://*/*",
+      "http://127.0.0.1/*",
+      "http://localhost/*"
+   ],
+   "icons": {
+      "16": "icon/16.png",
+      "32": "icon/32.png",
+      "48": "icon/48.png",
+      "96": "icon/96.png",
+      "128": "icon/128.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54Ar+304ilAK4Eg26Im1C9yqPmlDzqnP+dn3eYc298DQPkqfqRRNDZj4WrEP2G7YYWdI+KBNESxqeuPzKvWKPeXbfap4+o6jX2dpY7k8cpJX/mTJso9/0u6FsRx+1BgLqEEmCHsxLPNmiOBuOhdhZGctEKxKMR4cljclm++LAIPBHdsGWsrx0CT5amXVjCA2E0aBIGPOL9b2gqoBfURxcmOUpk6bEPkGxFyC1VtvivASHGZR8Yzc4gMVCv1FP5cDIbSxAB2WhC16tN3c/HX/GNknnXO/uoHhyuBtnC//HboFtW5w+6thU1nWOhfXHEkIlA5Fk+xKZqdU9lWzerOMXwIDAQAB",
+   "manifest_version": 3,
+   "name": "幻星填表助手 - 网申一键填表",
+   "permissions": [
+      "cookies",
+      "storage",
+      "tabs",
+      "scripting"
+   ],
+   "version": "1.6.0",
+   "web_accessible_resources": [
+      {
+         "matches": [
+            "*://*/*"
+         ],
+         "resources": [
+            "feedback-note-paper-v4.webp",
+            "membership-badges/*.png",
+            "lib/pdf.worker.min.js",
+            "options.html",
+            "options.js",
+            "options.css",
+            "applications.html",
+            "applications.js",
+            "applications.css"
+         ]
+      }
+   ],
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "options.html"
+   },
+   "options_page": "options.html"
+}
